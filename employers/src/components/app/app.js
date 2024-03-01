@@ -11,17 +11,20 @@ function App() {
         { 
             name: 'John Smith',
             salary: 800,
-            isIncreased: true
+            isIncreased: true,
+            id: 1
         },
         {
             name: 'Alex Crown',
             salary: 3000,
-            isIncreased: false
+            isIncreased: false,
+            id: 2
         },
         {
             name: 'Mike Ivanovoch',
             salary: 5000,
-            isIncreased: false
+            isIncreased: false,
+            id: 3
         }
     ];
 
