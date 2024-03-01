@@ -3,9 +3,9 @@ import './app-info.css';
 const AppInfo = () => {
     return (
         <div className="app-info">
-            <h1>Учет сотрудников в компании</h1>
-            <h2>Общее число сотрудеиков: </h2>
-            <h2>Премию получат: </h2>
+            <h1>Company employee accounting</h1>
+            <h2>All employees: </h2>
+            <h2>Salary bonus to: </h2>
         </div>
     );
 }
