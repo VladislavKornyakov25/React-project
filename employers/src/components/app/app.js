@@ -13,59 +13,97 @@ class App extends Component {
         super(props);
         this.state = {
             data: [
-                { name: 'John Smith', salary: 800, isIncreased: true, id: 1 },
-                { name: 'Alex Crown', salary: 3000, isIncreased: false, id: 2 },
-                { name: 'Mike Ivanovoch', salary: 5000, isIncreased: false, id: 3 }
+                { name: 'John Smith', salary: 800, isIncreased: true, isRised: true, id: 1 },
+                { name: 'Alex Crown', salary: 3000, isIncreased: false, isRised: false, id: 2 },
+                { name: 'Mike Ivanovoch', salary: 5000, isIncreased: false, isRised: false, id: 3 }
             ]
-        }
+        };
+        this.maxId = 4;        
     }
     
     deleteItem = (id) => {
         console.log('deleteItem');
         this.setState(({data}) => {
-            // const index = data.findIndex(elem => elem.id === id);
-            
+            // const index = data.findIndex(elem => elem.id === id);            
             // const before = data.slice(0, index);
-            // const after = data.slice(index + 1);
-            
-            // const newArr = [...before, ...after];
-            
-            // return {
-            //     data: newArr
-            // }
-
+            // const after = data.slice(index + 1);            
+            // const newArr = [...before, ...after];            
+            // return { data: newArr}
             return {
                 data: data.filter(item => item.id !== id)
             }
-        });
+        });                  
     }
 
     addItem = (name, salary) => { 
-        console.log('Add item function');
-        console.log('name ='  + name);
-        console.log('salary' + salary);
-        
-        this.setState(({data}) => {            
-            const newArr = [...data];
-            newArr.push({name: name, salary: salary, isIncreased: true, id: data.length + 1});
-            console.log(newArr);
-            return {
-                data: newArr
-            }
-        });                    
+        if (salary && name) {
+            const newItem = {
+                name: name,
+                salary: salary,
+                isIncreased: false,
+                isRised:false,
+                id: this.maxId++
+            }       
+            this.setState(({data}) => {            
+                const newArr = [...data, newItem];                       
+                return {
+                    data: newArr
+                }
+            });       
+        } 
+                            
     } 
+    
+    onToggleProp = (id, prop) => {
+        
+        // this.setState(({data}) => {
+        //     const index = data.findIndex(elem => elem.id === id);
+        //     const old = data[index];
+        //     const newItem = {...old, isIncreased: !old.isIncreased};
+        //     const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
+        //     return {
+        //         data: newArr
+        //     }
+        // });
+
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, [prop]: !item[prop]}
+                }
+                return item;
+            })            
+        }));        
+    }
+
+    // onToggleRise = (id) => {        
+    //     this.setState(({data}) => ({
+    //         data: data.map(item => {
+    //             if (item.id === id) {
+    //                 return {...item, isRised: !item.isRised}
+    //             }
+    //             return item;
+    //         })            
+    //     }));     
+    // }
 
     render() {
+        const numberOfEmployees = this.state.data.length;
+        const numberOFIncreasedEmployees = this.state.data.filter(item => item.isIncreased).length;
         return (
             <div className="app">
-                <AppInfo/> 
+                <AppInfo 
+                    numberOfEmployees={numberOfEmployees}
+                    numberOFIncreasedEmployees={numberOFIncreasedEmployees}/> 
                 <div className="search-panel">
                     <SearchPanel/>
                     <AppFilter/>
                 </div>
                 <EmployeesList 
                     data={this.state.data}
-                    onDelete={this.deleteItem}/>
+                    onDelete={this.deleteItem}
+                    onToggleProp={this.onToggleProp}/>
+                    
                 <EmployeesAddForm onAddItem={this.addItem}/>
             </div>
         );
